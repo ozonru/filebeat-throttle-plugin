@@ -10,3 +10,4 @@ env:
 
 script:
   - make test
+  - make linux_plugin
