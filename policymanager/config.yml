@@ -1,0 +1,7 @@
+---
+key: id
+default_limit: 1
+rules:
+  - limit: 100
+    selectors:
+      id: foo
