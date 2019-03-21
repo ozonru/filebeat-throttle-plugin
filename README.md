@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/ozonru/filebeat-throttle-plugin.svg?branch=master)](https://travis-ci.org/ozonru/filebeat-throttle-plugin)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ozonru/filebeat-throttle-plugin)](https://goreportcard.com/report/github.com/ozonru/filebeat-throttle-plugin)
+
 # filebeat-throttle-plugin
 
 This plugins allows to throttle beat events.
