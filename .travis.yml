@@ -9,4 +9,4 @@ env:
 
 
 script:
-  - echo "HELLO, WORLD!"
+  - make test
