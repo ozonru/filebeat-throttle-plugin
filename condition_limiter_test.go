@@ -130,6 +130,11 @@ func BenchmarkAllow(b *testing.B) {
 }
 
 func TestConditionLimiter_WriteStatus(t *testing.T) {
+	current := time.Local
+	time.Local = time.UTC
+	defer func() {
+		time.Local = current
+	}()
 	tt := time.Date(2018, 12, 19, 19, 30, 25, 0, time.UTC)
 	cl, _ := NewConditionLimiter(map[string]string{"a": "1"}, 60, 2, 2, tt)
 	cl.Allow(tt)
@@ -138,8 +143,8 @@ func TestConditionLimiter_WriteStatus(t *testing.T) {
 	cl.WriteStatus(&b)
 
 	assert.Equal(t, `map[a:1]
-#2018-12-19 22:29:00 +0300 MSK: [____________________] 0/2
-#2018-12-19 22:30:00 +0300 MSK: [##########__________] 1/2
+#2018-12-19 19:29:00 +0000 UTC: [____________________] 0/2
+#2018-12-19 19:30:00 +0000 UTC: [##########__________] 1/2
 `, b.String())
 }
 
