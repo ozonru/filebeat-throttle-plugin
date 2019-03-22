@@ -16,5 +16,7 @@ env:
 script:
 - make test
 - make linux_plugin
+- docker build -t ozonru/filebeat-throttle-plugin:latest .
 after_success:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker push ozonru/filebeat-throttle-plugin:latest
