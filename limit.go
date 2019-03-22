@@ -6,15 +6,13 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"sort"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/libbeat/logp"
 	"github.com/pkg/errors"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 type RemoteConfig struct {
@@ -169,23 +167,4 @@ func (rl *RemoteLimiter) WriteStatus(w io.Writer) error {
 	fmt.Fprintf(w, "rules: \n\n%#v", rl.rules)
 
 	return nil
-}
-
-func fieldsHash(m map[string]string) string {
-	keys := make([]string, 0, len(m))
-	for k := range m {
-		keys = append(keys, k)
-	}
-
-	sort.Strings(keys)
-
-	var b strings.Builder
-	for _, k := range keys {
-		b.WriteString(k)
-		b.WriteByte(':')
-		fmt.Fprintf(&b, "%v", m[k])
-		b.WriteByte(';')
-	}
-
-	return b.String()
 }

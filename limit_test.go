@@ -6,7 +6,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/elastic/beats/libbeat/conditions"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,39 +30,4 @@ rules:
 
 	l, _ := NewRemoteLimiter(url, 1, 10)
 	assert.NoError(t, l.Update(context.Background()))
-}
-
-type Selector map[string]string
-
-func TestSelectLimiterKey(t *testing.T) {
-	cases := []struct {
-		selectors   []Selector
-		fields      map[string]string
-		expectedKey string
-	}{
-		{
-			selectors: []Selector{
-				map[string]string{
-					"a": "b",
-				},
-			},
-		},
-	}
-
-	for _, tc := range cases {
-		t.Run("", func(t *testing.T) {
-			_ = tc
-		})
-	}
-}
-
-func TestBar(t *testing.T) {
-	m := map[string]interface{}{
-		"f": "1",
-		"b": "2",
-	}
-
-	var f conditions.Fields
-
-	f.Unpack(m)
 }
