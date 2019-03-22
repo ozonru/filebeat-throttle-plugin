@@ -1,13 +1,22 @@
 language: go
-
+services:
+  - docker
 go:
-  - 1.11.x
-  - master
-
+- 1.11.x
+- master
 env:
+  matrix:
   - GO111MODULE=on
-
-
+  global:
+  - secure: cUSvtjeSV1fIPVj9/q0R6aDzcVo+5px1P+t6X6QGIaE6agkilWGvkv30P6LQgZKoK3ws8IOsk+UxMc8klXixDvAwBpFoj/zbc55kYeA5jbuHZ9t8zt4ahp2kc/Oaub+rJU9ZtRQUfXdmYZEOII3uy1YkG+qz+h1uDDFsWa8rq+8hZMpBLWWNS7ME9GSWambWHvQCbgm9YPpdMQ+whOq854N/3EYW9PRHhUbXZjuvAYarF34XEteltKdxE0moarUbVPAG6aRTmmOfK7TTN712qooq+h3ST7myaiDDbbe6DGfFmouMOZaW88UtX3I/XqTgtU+SyXhyhuvD26GjYVo2B+/1BJLqKygz1OGhBAhlwWKFKgI9NMpm0daxkR8IGRqRXwxOvbHCZhRhT/i7xHTBraV3rcIlXvIj69h4NLQRVOh/2ikDEpikn9z20wZBrRRu20j41Rvj1koQ3LAII/vWssJL126clH2yXXCf1uTbNVkI92RJfEQE0S8RlYxteY86hHJEDQvsNaQOG7ILOGZcioh4x8O8YizcH2AX78r2UkK5M9Xbi2TpJoi2H9ITIX+ebriPY2hiU5jNT7u93HMe3smHwfDCSKd5W55GdybfTYLZugcyEOZDLCXhf4yICZxWQKbRA7JVcfwCfJ46OcvCywdhogR9JHbx4pi2RguXunI=
+  - secure: TtgIxjXZ6modBXExBWECdxz/cjOjf17vg5c8sL6t9u74lzDTswhmkuTKQ5HbcIfPcvKlBZ5J1l96qDSgW5S58zu2X22VaBXRMgUoolXe8u1RfzFeU7E7vCzpeCIqLCDLn+1NAvwHIKNx2+ZcjFBiGRcG0ol8WfG6OgvQjr9RbmLLsJFLMVxDEpWRM9kFZMTv98ijPucpbCQOOC3B6aS2XvV863vKhrUTavm9AaWzUVdmlXqikWEjaRZVbm1IdI4qs6sqLVJd3kV1a55dFwJl0SI52/kfIIDOg8c40wPx0uFu4wSY6g5enS5CwDQZ7RSRNtL3khfOaD6zWOOnztUK2YOV85oaKK3rO95o4FOxjRNDRhF4Tb2mDmcoXBt17OvOvQ7hrOm0GNH7SA6nFpl/emjBqg3r3FsM/eZTQd6p2A3HseGHQ8wpOpQngyF9kUrgL03ChCpoc11EziFQIdkjNkLfG3OsUxF/Z8WD74IkU2bSjZ+por6U0If+xK0I3xEpozHuQCns8v6dRp31bRwl9Om8VqCHa7T38ypzFeuSzcFTk0Y+f3b0l5PsWwytA/gMfUGeGwNPU703NMI4HtbyiL82FGaMS0+gXpHsRXHzAk/e+mgM0Mx2kH94MWyrefyxW5bbZrbEKzVhExHfOAg8OM1KhnUIIU92t1nIR3Zy0EU=
 script:
-  - make test
-  - make linux_plugin
+- make test
+- make linux_plugin
+
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+    make push-image ;
+    fi
+
