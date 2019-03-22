@@ -14,5 +14,4 @@ script:
 - make test
 - make linux_plugin
 after_success:
-- if [[ "$TRAVIS_BRANCH" == "master" ]]; then docker login -u $DOCKER_USERNAME -p
-  $DOCKER_PASSWORD ; make push-image ; fi
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
