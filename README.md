@@ -85,13 +85,13 @@ limits:
       kubernetes_namespace: "bx"
 ```
 
-`value` указывает на максимальное разрешенное кол-во сообщений в интервал времени, указанный в `bucket_size`.  
-В `conditions` можно использовать любые поля из событий. Все условия работают по принципу `equals`, т.е. по полному совпадению.
+`value` specifies maximum number of events that will be passed in interval `bucket_size`.
+In `conditions` section you use any fields from your events. All conditions works as `equal`.
 
 
 ## Throttling algorithm
 
-Для реализации троттлинга используется имплементация `token bucket` алгоритма. В простейшем случае мы можем хранить только один текущий бакет и считать лимиты по ней. Однако, такой алгоритм плохо работает в случае, когда filebeat некоторое время не работает (плановое обновление, падение и т.д.): в этом случае все накопившиеся сообщения будут попадать в один бакет, что может привести к игнорированию тех сообщений, которые не должны были быть проигнорированы при обычной работе. Чтобы избежать таких проблем, нам нужно хранить информацию о N последних бакетах. 
+We use `token bucket` algorithm for throttling. In the simplest way we can use only single bucket for events limit. But in real life beats can be down (maintance, some failures, etc): in this case all events (new and old ones) use tokens from same bucket and some events can be skipped because of overflow. To avoid such situations we need to keep N last bucket and use event timestamp to choose bucket.
 
 Imagine that processor has following configuration:
 ```
