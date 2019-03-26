@@ -93,15 +93,15 @@ limits:
 
 Для реализации троттлинга используется имплементация `token bucket` алгоритма. В простейшем случае мы можем хранить только один текущий бакет и считать лимиты по ней. Однако, такой алгоритм плохо работает в случае, когда filebeat некоторое время не работает (плановое обновление, падение и т.д.): в этом случае все накопившиеся сообщения будут попадать в один бакет, что может привести к игнорированию тех сообщений, которые не должны были быть проигнорированы при обычной работе. Чтобы избежать таких проблем, нам нужно хранить информацию о N последних бакетах. 
 
-Представим, что processor имеет следующие настройки:
+Imagine that processor has following configuration:
 ```
-bucket_size: 1 // 1 секунда
+bucket_size: 1 // 1 second
 buckets: 5
 ```
 
-и имеем одно правило с `limit: 10`
+And rule with `limit: 10`
 
-Тогда в момент времени T для этого правила будут существовать такие бакеты:
+Then in the time moment T we'll have buckets:
 ```
 T - 5        T - 4         T - 3         T - 2         T - 1          T
   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
@@ -109,7 +109,7 @@ T - 5        T - 4         T - 3         T - 2         T - 1          T
   └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
 ```
 
-При добавление события со временем между `T-3` и `T-2` ситуация изменится на такую:
+After adding event in interval between `T-3` and `T-2`:
 ```
 T - 5        T - 4         T - 3         T - 2         T - 1          T
   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
@@ -117,9 +117,9 @@ T - 5        T - 4         T - 3         T - 2         T - 1          T
   └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
 ```
 
-При переполнении какого-то бакета, все события попадающие в этот временной интервал будут проигнорированы.
+If one one of buckets overflows all new events will be ignored.
 
-В момент времени `T + 1` бакеты будут такие:
+At `T + 1` all buckets shift left:
 ```
 T - 4        T - 3         T - 2         T - 1           T          T + 1
   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
@@ -127,17 +127,37 @@ T - 4        T - 3         T - 2         T - 1           T          T + 1
   └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘
 ```
 
-Т.е. все бакеты сдвинулись на одну влево. Все события со временем старше, чем `T-4` будут проигнорированы.
+All events with timestamp earlier than `T-4` will be ignored.
 
 
-## Сборка
+## Building
 
-Filebeat не предоставляет механизма для динамического подключения плагинов, поэтому нужно пересобирать бинарник filebeat'a с нашим плагином.  
-Для этого в пакет `main` filebeat'a подкладывается файл `beats/register_ratelimit_plugin.go`, который импортирует пакет плагина.
+There are two options how you can build and use throttle processor:
+ - build beat binary with throttle processor inside
+ - use it as separate plugin
+ 
+### Compile-in
 
-## Генератор логов
+You have to copy `register/compile/plugin.go` to the `main` package of required beat.
+```
+cp $GOPATH/github.com/ozonru/filebeat-throttle-plugin/register/compile/plugin.go $GOPATH/github.com/elastic/beats/filebeat
+go build github.com/elastic/beats/filebeat
+```
 
-В `generator` лежит простой генератор логов, который удобно использовать для локального тестирования.  
+### Plugin
+
+You can build plugin both for linux and MacOS:
+
+```
+make linux_plugin
+make darwin_plugin
+```
+
+To use plugin make sure that you have the same Go version as beat binary was built.
+
+## Log generator (for development)
+
+In `generator` you can find simple log generator that can be used for local development & testing).  
 ```
 ➜ go get -u gitlab.ozon.ru/sre/filebeat-ratelimit-plugin/generator
 ➜ generator -h
@@ -162,5 +182,3 @@ Usage of generator:
 {"ts":"2019-01-09T18:59:56.809872+03:00", "message": "8", "id":"foo"}
 ^C
 ```
-
-С помощью ключа `-rate` можно управлять кол-вом сообщением в секунду, которое будет выдавать генератор.
