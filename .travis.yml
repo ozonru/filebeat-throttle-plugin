@@ -16,7 +16,6 @@ env:
   - secure: iN6+yZpQH+klM8wJ16Y9Jle6an5saQ2bzOdTREiZFIohaa1t4gHgr4fx2spJsOv/1B9iYSyWZ/UkSDZb8ZfwzI9SdvNbJ0Oj8C1o64/R5uK/mRYOhNK9jzEK3Yehj717Rtaeh1zZr9f6oDF99Sqp/so3PBHh94W4VENgRvHLHuasrkAFF0wZ87ri0dBpQrv82ngxA6nddIGVvM6WifrY+YbPr2Jbb5rL/SzACQgRp3Vlhnt4OXf3KoICm4hakOfLY2p82mncWImShxEOYCGeApm9WgB0/OM/ywBHU2yOHyfolP7M1WlxrlFqTJt9+fu1AqKp1rzQAdXPrkvs4MHImYWmMT6jGioVY5BY+1uZ6IW6YbTRUTrf29bT12Q5d+C6wIAx4I2ZPuK7tAORXZjpBprGEZ+tJy16Om6EKZydj4Vu+xtWAdS2FwVBUYK1CZGgVFq9eN87tFFohw7F5ACGmYHyLXItuqd3QE5K1Ky9tfJI7VVXBDfONO99kKgFtHi6crt+Vuf553gWNja9wlPKuclYiFNurJ7Gqj9Ml0Z5xKWD2We9i2UqNTV3u7NQ6wQ8oLkDXbz6fEvT3EmO3+Xh5qIG9xcUeArKV1IPDOB+KPkKEPHbfdcGHj5hmM8ojd03h6xsSTOUuCjtyh9Go2WolPaM9jTvkIW3GixXwd9ZBmI=
 script:
 - make test
-- make linux_plugin_docker
 - docker build -t ozonru/filebeat-throttle-plugin:${TAG} .
 after_success:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
