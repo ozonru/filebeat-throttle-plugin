@@ -4,6 +4,8 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/elastic/beats v6.6.2+incompatible h1:bxz0RLQYMqhsVN7vk2VYpR8EloyUNCyvEzBd9lYx9eU=
 github.com/elastic/beats v6.6.2+incompatible/go.mod h1:7cX7zGsOwJ01FLkZs9Tg5nBdnQi6XB3hYAyWekpKgeY=
+github.com/elastic/beats v7.0.0+incompatible h1:FyKulKfe+X8twQirAitdQK971M93/KzF2aD/3Uj3fts=
+github.com/elastic/beats v7.0.0+incompatible/go.mod h1:7cX7zGsOwJ01FLkZs9Tg5nBdnQi6XB3hYAyWekpKgeY=
 github.com/elastic/go-ucfg v0.7.0 h1:1+C/sZdJKww8hKl7XtLPTjs4cFslhQF2fazKTF+ZE+4=
 github.com/elastic/go-ucfg v0.7.0/go.mod h1:iaiY0NBIYeasNgycLyTvhJftQlQEUO2hpF+FX0JKxzo=
 github.com/gofrs/uuid v3.2.0+incompatible h1:y12jRkkFxsd7GpqdSZ+/KCs/fJbqpEXSGd4+jfEaewE=
