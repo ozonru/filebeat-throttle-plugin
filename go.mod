@@ -1,7 +1,7 @@
 module github.com/ozonru/filebeat-throttle-plugin
 
 require (
-	github.com/elastic/beats v6.6.2+incompatible
+	github.com/elastic/beats v7.0.0+incompatible
 	github.com/elastic/go-ucfg v0.7.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect

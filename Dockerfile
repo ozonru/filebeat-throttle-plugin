@@ -1,5 +1,5 @@
-ARG filebeatVersion=6.5.4
-ARG goVersion=1.10.6
+ARG filebeatVersion=7.0.0
+ARG goVersion=1.11.5
 FROM golang:$goVersion
 ARG filebeatVersion
 RUN curl -L --output /tmp/filebeat.tar.gz https://github.com/elastic/beats/archive/v$filebeatVersion.tar.gz
